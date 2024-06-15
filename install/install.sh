@@ -1,23 +1,36 @@
 function install_zshrc(){
-	local this_dir=$(dirname $(type ${BASH_SOURCE:-$0}|awk '{print $NF}'))
+	local this_dir=$(cd $(dirname ${BASH_SOURCE:-$0}); pwd)
 	cp $this_dir/default_rc/.zshrc ~/.zshrc
+
+	# $(dirname ${this_dir}) returns root dir path
+	echo "this_shelld_path=$(dirname ${this_dir})/init.sh" >> ~/.zshrc
+	echo "initial_load" >> ~/.zshrc
+	echo "unset -f initial_load" >> ~/.zshrc
 }
 function install_bashrc(){
-	local this_dir=$(dirname $(type ${BASH_SOURCE:-$0}|awk '{print $NF}'))
+	local this_dir=$(cd $(dirname ${BASH_SOURCE:-$0}); pwd)
 	cp $this_dir/default_rc/.bashrc ~/.bashrc
+
+		# $(dirname ${this_dir}) returns root dir path
+	echo "this_shelld_path=$(dirname ${this_dir})/init.sh" >> ~/.bashrc
+	echo "initial_load" >> ~/.bashrc
+	echo "unset -f initial_load" >> ~/.bashrc
 }
 
 function backup_zshrc(){
-	local this_dir=$(dirname $(type ${BASH_SOURCE:-$0}|awk '{print $NF}'))
+	local this_dir=$(cd $(dirname ${BASH_SOURCE:-$0}); pwd)
 	mkdir -p $this_dir/backup
-	mv ~/.zshrc $this_dir/backup
+	mv ~/.zshrc $this_dir/backup/$(backup_timestamp).zshrc
 }
 function backup_bashrc(){
-	local this_dir=$(dirname $(type ${BASH_SOURCE:-$0}|awk '{print $NF}'))
+	local this_dir=$(cd $(dirname ${BASH_SOURCE:-$0}); pwd)
 	mkdir -p $this_dir/backup
-	mv ~/.bashrc $this_dir/backup
+	mv ~/.bashrc $this_dir/backup/$(backup_timestamp).bashrc
 }
 
+function backup_timestamp(){
+	date +'%y%m%d%H%M%S'
+}
 
 # install_shelld backup original rc file.
 # arg

@@ -1,8 +1,10 @@
 #!/bin/bash
-setup_file=$HOME/shelld/init.sh
+function initial_load(){
+	if [ -r $this_shelld_path ]; then
+		source $this_shelld_path
+	else
+		echo "cannot find zsh setting file"
+	fi
+}
 
-if [ -r $setup_file ]; then
-	source $setup_file
-else
-	echo "cannot find zsh setting file"
-fi
+# will add some lines when copy this file to HOME
