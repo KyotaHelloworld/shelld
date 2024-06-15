@@ -1,0 +1,12 @@
+# SHELLD
+
+my shell settings
+
+
+
+
+
+
+
+
+
