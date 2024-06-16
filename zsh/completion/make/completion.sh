@@ -30,10 +30,3 @@ _make_phony_complete() {
 
   COMPREPLY+=( $(compgen -W "$( _make_phony_words )" -- ${cur}) )
 }
-
-function make_completion() {
-	complete -F _make_phony_complete make
-}
-
-make_completion
-unset -f make_completion
