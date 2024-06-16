@@ -2,7 +2,7 @@
 GOENV_SUB_COMMAND=$1
 GOENV_TARGET_GO_VERSION=$2
 
-function goenv_install () {
+function goenv_install() {
     which goenv 1>/dev/null 2>&1
     if [[ "$?" -eq "0" ]]; then
         echo Already installed.
@@ -12,7 +12,7 @@ function goenv_install () {
     git clone https://github.com/syndbg/goenv.git ~/.goenv
 }
 
-function goenv_update () {
+function goenv_update() {
     which goenv 1>/dev/null 2>&1
     if [[ "$?" -ne "0" ]]; then
         echo "AT THE FIRST, INSTALL GOENV." >&2
@@ -29,7 +29,7 @@ function goenv_update () {
     fi
 }
 
-function set_go_version () {
+function set_go_version() {
     GOENV_TARGET_GO_VERSION=$1
     if [[ -z $GOENV_TARGET_GO_VERSION ]]; then
         echo "available Go versions are"
@@ -39,7 +39,7 @@ function set_go_version () {
         return 0
     fi
 
-    goenv install $GOENV_TARGET_GO_VERSION 
+    goenv install $GOENV_TARGET_GO_VERSION
     if [[ $? -ne "0" ]]; then
         echo "go version" $GOENV_TARGET_GO_VERSION "is not exist."
         echo "you can choose go version in ..."
@@ -54,17 +54,15 @@ function set_go_version () {
     go version
 }
 
-
 if [[ $GOENV_SUB_COMMAND = "install" ]]; then
-    goenv_install \
-    && set_go_version $GOENV_TARGET_GO_VERSION
+    goenv_install &&
+        set_go_version $GOENV_TARGET_GO_VERSION
 fi
 
 if [[ $GOENV_SUB_COMMAND = "update" ]]; then
-    goenv_update \
-    && set_go_version $GOENV_TARGET_GO_VERSION
+    goenv_update &&
+        set_go_version $GOENV_TARGET_GO_VERSION
 fi
-
 
 unset GOENV_SUB_COMMAND
 unset GOENV_TARGET_GO_VERSION

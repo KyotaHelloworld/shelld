@@ -1,5 +1,5 @@
 #!/bin/bash
-# 3X text color 
+# 3X text color
 # 4X background color
 # 9X text color (more lightly)
 # 10X backgroud color (more lightly)
@@ -24,11 +24,11 @@
 
 # 1 It depends on the terminal emulator.
 # 5 This does not work in most terminal emulators
-# 7 This inverts the foreground and background colors, 
+# 7 This inverts the foreground and background colors,
 #   so you’ll see black text on a white background if the current text is white text on a black background
 
 # {filetype}=[style]{;[style]}:
-function ls_colors_setting(){
+function ls_colors_setting() {
 	# 例外設定
 	ls_colors="\
 		no=0;97:\
@@ -76,7 +76,6 @@ function ls_colors_setting(){
 		*.mpeg=30;46:\
 		*.webm=30;46:\
 	"
-
 
 	# 画像ファイル
 	ls_colors=$ls_colors"\

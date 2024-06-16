@@ -1,5 +1,5 @@
 #!/bin/zsh
-function alias_cursor () {
+function alias_cursor() {
 	alias code='cursor'
 }
 

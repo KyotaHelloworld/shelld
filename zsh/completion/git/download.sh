@@ -1,6 +1,6 @@
 #!/bin/zsh
-function download_git_completion(){
-	local this_dir=$(dirname $(type ${BASH_SOURCE:-$0}|awk '{print $NF}'))
+function download_git_completion() {
+	local this_dir=$(dirname $(type ${BASH_SOURCE:-$0} | awk '{print $NF}'))
 
 	local file_name="git_completion.sh"
 	local file_url="https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.zsh"

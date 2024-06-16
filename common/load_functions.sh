@@ -13,8 +13,8 @@
 #   [option] specifing +init.sh at 2nd option allows loading init.sh
 # return errors
 #   1. when the 1st arg is specified unexisting dir
-#   2. when the files specified at 2nd or subsequent args don't exist in the 1st arg dir  
-function load_dir_files () {
+#   2. when the files specified at 2nd or subsequent args don't exist in the 1st arg dir
+function load_dir_files() {
     local dir=$1
     shift # shift changes args order. now $1 returns prev $2, $2 returns prev $3 ...
     local init_sh=false
@@ -51,7 +51,7 @@ function load_dir_files () {
 #   2. give dir names which you won't be loading
 # return errors
 #   1. when the 1st arg is specified unexisting dir
-#   2. when the dirs specified at 2nd or subsequent args don't exist in the 1st arg dir  
+#   2. when the dirs specified at 2nd or subsequent args don't exist in the 1st arg dir
 # usage
 # load_dirs_init "$this_dir" "dir3"
 # ./
@@ -66,7 +66,7 @@ function load_dir_files () {
 # ├── dir4
 # │   └── test.sh      // x due to init.sh not exist
 # └── init.sh          // call this function
-function load_dirs_init () {
+function load_dirs_init() {
     local dir=$1
     shift
     local exclude_dirs=("$@")
@@ -88,7 +88,7 @@ function load_dirs_init () {
     done
 }
 
-function unset_load_functions(){
+function unset_load_functions() {
     unset -f load_dir_files
     unset -f load_dirs_init
 }

@@ -1,5 +1,5 @@
 #!/bin/bash
-function alias_docker(){
+function alias_docker() {
 	alias d='docker'
 	alias dc='docker compose'
 }

@@ -1,5 +1,5 @@
 #!/bin/zsh
-function history_setting () {
+function history_setting() {
 	export HISTFILE=${HOME}/.zsh_history
 	export HISTSIZE=10000
 	export SAVEHIST=100000
@@ -11,7 +11,7 @@ function history_setting () {
 	fi
 
 	setopt hist_ignore_dups
-	setopt EXTENDED_HISTORY	
+	setopt EXTENDED_HISTORY
 }
 history_setting
 unset -f history_setting

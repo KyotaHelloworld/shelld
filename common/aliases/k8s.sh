@@ -1,5 +1,5 @@
 #!/bin/bash
-function alias_kube(){
+function alias_kube() {
 	alias k='kubectl'
 	alias kgp='kubectl get pod'
 	alias kgs='kubectl get service'

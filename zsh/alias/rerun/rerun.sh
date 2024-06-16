@@ -1,5 +1,5 @@
 #!/bin/zsh
-function alias_rerun () {
+function alias_rerun() {
 	alias rerun='source ~/.zshrc'
 }
 

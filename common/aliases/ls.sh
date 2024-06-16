@@ -1,5 +1,5 @@
 #!/bin/bash
-function alias_ls(){
+function alias_ls() {
     alias l='ls -CF'
     alias ll='ls -alF'
     alias la='ls -A'

@@ -1,8 +1,8 @@
 #!/bin/bash
-function input_method_fcitx(){
-    local this_dir=$(dirname $(type ${BASH_SOURCE:-$0}|awk '{print $NF}'))
+function input_method_fcitx() {
+    local this_dir=$(dirname $(type ${BASH_SOURCE:-$0} | awk '{print $NF}'))
 
-    if [[ -z $GTK_IM_MODULE ]] || [[ -z $XMODIFIERS ]] || [[ -z $QT_IM_MODULE ]] ; then
+    if [[ -z $GTK_IM_MODULE ]] || [[ -z $XMODIFIERS ]] || [[ -z $QT_IM_MODULE ]]; then
         echo "[SUGGESTION] put environment for fcitx in /etc/environment"
         echo "[SUGGESTION] check exporting env value in $this_dir"
     fi

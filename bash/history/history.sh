@@ -1,5 +1,5 @@
 #!/bin/bash
-function history_setting () {
+function history_setting() {
 	export HISTFILE=${HOME}/.bash_history
 	export HISTSIZE=1000
 	export SAVEHIST=100000

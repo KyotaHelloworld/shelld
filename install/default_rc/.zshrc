@@ -1,5 +1,5 @@
 #!/bin/zsh
-function initial_load(){
+function initial_load() {
 	if [ -r $this_shelld_path ]; then
 		source $this_shelld_path
 	else

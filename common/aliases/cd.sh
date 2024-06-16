@@ -1,5 +1,5 @@
 #!/bin/bash
-function alias_cd(){
+function alias_cd() {
 	alias cd.='cd ..'
 	alias ..='cd ..'
 	alias ...='cd ../../'
@@ -21,4 +21,3 @@ function alias_cd(){
 
 alias_cd
 unset -f alias_cd
-

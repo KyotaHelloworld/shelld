@@ -1,5 +1,5 @@
 #!/bin/bash
-function alias_systemctl(){
+function alias_systemctl() {
 	alias restart='sudo systemctl restart'
 	alias system='sudo systemctl'
 }
