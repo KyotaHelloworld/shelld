@@ -11,6 +11,8 @@ function shelld_init(){
    elif [ -n "$BASH_VERSION" ]; then
       source $this_dir/bash/init.sh
    fi
+
+   unset_load_functions
 }
 shelld_init
 unset -f shelld_init

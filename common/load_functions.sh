@@ -87,3 +87,8 @@ function load_dirs_init () {
         fi
     done
 }
+
+function unset_load_functions(){
+    unset -f load_dir_files
+    unset -f load_dirs_init
+}
