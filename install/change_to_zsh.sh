@@ -1,7 +1,6 @@
-function install_zsh_yay() {
-	echo 'installing zsh ...'
-	sudo yay
-	sudo yay -S zsh
+function install_zsh_pacman() {
+	echo 'installing zsh using pacman...'
+	sudo pacman -Sy --noconfirm zsh
 }
 function install_zsh_apt() {
 	echo 'installing zsh ...'
@@ -12,8 +11,8 @@ function install_zsh_apt() {
 function change_to_zsh() {
 	zshpath=$(which zsh)
 	if [[ -z $zshpath ]]; then
-		if [[ -n $(which yay) ]]; then
-			install_zsh_yay
+		if [[ -n $(which pacman) ]]; then
+			install_zsh_pacman
 		elif [[ -n $(which apt) ]]; then
 			install_zsh_apt
 		else

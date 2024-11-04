@@ -28,16 +28,24 @@ function backup_zshrc() {
 		cd $(dirname ${BASH_SOURCE:-$0})
 		pwd
 	)
-	mkdir -p $this_dir/backup
-	mv ~/.zshrc $this_dir/backup/$(backup_timestamp).zshrc
+	if [ -e "~/.zshrc" ]; then
+		mkdir -p $this_dir/backup
+		mv ~/.zshrc $this_dir/backup/$(backup_timestamp).zshrc
+	else
+		echo "no zshrc file. so skip backup process"
+	fi
 }
 function backup_bashrc() {
 	local this_dir=$(
 		cd $(dirname ${BASH_SOURCE:-$0})
 		pwd
 	)
-	mkdir -p $this_dir/backup
-	mv ~/.bashrc $this_dir/backup/$(backup_timestamp).bashrc
+	if [ -e "~/.bashrc" ]; then
+		mkdir -p $this_dir/backup
+		mv ~/.bashrc $this_dir/backup/$(backup_timestamp).bashrc
+	else
+		echo "no backrc file. so skip backup process"
+	fi
 }
 
 function backup_timestamp() {
