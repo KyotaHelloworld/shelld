@@ -9,7 +9,7 @@ function goenv_install() {
         goenv --version
         return 0
     fi
-    git clone https://github.com/syndbg/goenv.git ~/.goenv
+    git clone https://github.com/go-nv/goenv.git ~/.goenv
 }
 
 function goenv_update() {
