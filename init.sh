@@ -11,8 +11,13 @@ function shelld_init() {
 	elif [ -n "$BASH_VERSION" ]; then
 		source $this_dir/bash/init.sh
 	fi
-
+	
+	if [ -e "$this_dir/private" ]; then
+		load_dir_files $this_dir/private
+	fi
 	unset_load_functions
 }
+
 shelld_init
 unset -f shelld_init
+
