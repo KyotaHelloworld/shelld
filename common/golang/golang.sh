@@ -1,14 +1,16 @@
 #!/bin/bash
 function golang_env_var() {
-	export GOPATH=$HOME/go
-	export GOENV_ROOT=$HOME/.goenv
-	export PATH=$GOENV_ROOT/bin:$PATH
-	eval "$(goenv init -)"
-	export PATH=$GOPATH/bin:$PATH
+	export GOPATH="${GOPATH:-$HOME/go}"
 
-	export GO111MODULE=on
-	export GOPROXY=direct
-	export GOSUMDB=off
+	case ":$PATH:" in
+		*:"$GOPATH/bin":*) ;;
+		*) export PATH="$GOPATH/bin:$PATH" ;;
+	esac
+
+	if command -v goenv >/dev/null 2>&1; then
+		export GOENV_ROOT="${GOENV_ROOT:-$HOME/.goenv}"
+		eval "$(goenv init -)"
+	fi
 }
 
 golang_env_var

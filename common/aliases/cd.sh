@@ -4,7 +4,7 @@ function alias_cd() {
 	alias ..='cd ..'
 	alias ...='cd ../../'
 	alias ....='cd ../../../'
-	alias .....='cd ../../../'
+	alias .....='cd ../../../../'
 	alias .2='cd ../../'
 	alias .3='cd ../../../'
 	alias .4='cd ../../../../'
@@ -14,7 +14,7 @@ function alias_cd() {
 	alias ..l='cd .. && ls -aCF'
 	alias ...l='cd ../../ && ls -aCF'
 	alias ....l='cd ../../../ && ls -aCF'
-	alias .....l='cd ../../../ && ls -aCF'
+	alias .....l='cd ../../../../ && ls -aCF'
 
 	alias CD='cd'
 }

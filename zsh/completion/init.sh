@@ -1,13 +1,17 @@
 #!/bin/zsh
 function completion_init() {
-	local this_dir=$(dirname $(type ${BASH_SOURCE:-$0} | awk '{print $NF}'))
-	load_dirs_init "$this_dir"
-
-	# autoload scans each path within the fpath variable for files starting with an underscore
-	# and loads the corresponding script as a function file
+	if [ -n "$BASH_VERSION" ]; then
+		local this_source="${BASH_SOURCE[0]}"
+	else
+		local this_source="${(%):-%x}"
+	fi
+	local this_dir
+	this_dir=$(dirname "$this_source")
 	autoload -Uz compinit
-	# compinit: Initializes the shell’s auto-completion functionality
 	compinit
+
+	# Individual completion scripts can safely call compdef after compinit.
+	load_dirs_init "$this_dir"
 }
 completion_init
 unset -f completion_init

@@ -1,8 +1,9 @@
 #!/bin/bash
 function history_setting() {
 	export HISTFILE=${HOME}/.bash_history
-	export HISTSIZE=1000
-	export SAVEHIST=100000
+	export HISTSIZE=10000
+	export HISTFILESIZE=100000
+	export HISTCONTROL=ignoredups:erasedups
 
 	if [[ -f $HISTFILE ]]; then
 		: # OK. file is exist
@@ -10,8 +11,7 @@ function history_setting() {
 		touch $HISTFILE
 	fi
 
-	setopt hist_ignore_dups
-	setopt EXTENDED_HISTORY
+	shopt -s histappend
 }
 history_setting
 unset -f history_setting

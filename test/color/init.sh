@@ -4,7 +4,13 @@
 # No Need To Change.
 
 function create_sample_dirs() {
-	local this_dir=$(dirname $(type ${BASH_SOURCE:-$0} | awk '{print $NF}'))
+	if [ -n "$BASH_VERSION" ]; then
+		local this_source="${BASH_SOURCE[0]}"
+	else
+		local this_source="${(%):-%x}"
+	fi
+	local this_dir
+	this_dir=$(dirname "$this_source")
 	mkdir -p $this_dir/files
 	cd files
 
@@ -22,7 +28,13 @@ function create_sample_dirs() {
 }
 
 function color_init() {
-	local this_dir=$(dirname $(type ${BASH_SOURCE:-$0} | awk '{print $NF}'))
+	if [ -n "$BASH_VERSION" ]; then
+		local this_source="${BASH_SOURCE[0]}"
+	else
+		local this_source="${(%):-%x}"
+	fi
+	local this_dir
+	this_dir=$(dirname "$this_source")
 	local ls_colors="\
 		*.Black=30:   *.Black_light=90:   *.BG_Black=40:   *.BG_Black_light=100: \
 		*.Red=31:     *.Red_light=91:     *.BG_Red=41:     *.BG_Red_light=101:   \

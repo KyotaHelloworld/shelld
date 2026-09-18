@@ -19,6 +19,10 @@ function load_dir_files() {
     shift # shift changes args order. now $1 returns prev $2, $2 returns prev $3 ...
     local init_sh=false
 
+    if [ -n "$ZSH_VERSION" ]; then
+        setopt local_options null_glob
+    fi
+
     # the 2nd arg is now positioned at 1st due to shift called before
     if [ "$1" = "+init.sh" ]; then
         init_sh=true
@@ -37,6 +41,7 @@ function load_dir_files() {
         return 1
     fi
     for file in "$dir"/*.sh; do
+        [ -f "$file" ] || continue
         if [[ ! " ${exclude_files[@]} " =~ " ${file##*/} " ]]; then
             source "$file"
         fi
@@ -71,12 +76,17 @@ function load_dirs_init() {
     shift
     local exclude_dirs=("$@")
 
+    if [ -n "$ZSH_VERSION" ]; then
+        setopt local_options null_glob
+    fi
+
     if [ ! -d "$dir" ]; then
         echo "Error: Directory '$dir' does not exist." >&2
         return 1
     fi
 
     for subdir in "$dir"/*; do
+        [ -d "$subdir" ] || continue
         if [ -d "$subdir" ]; then
             local init_sh_file="$subdir/init.sh"
             if [ -f "$init_sh_file" ]; then

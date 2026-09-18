@@ -26,7 +26,9 @@ _make_phony_words() {
 }
 
 _make_phony_complete() {
-  local cur="${COMP_WORDS[COMP_CWORD]}"
-
-  COMPREPLY+=( $(compgen -W "$( _make_phony_words )" -- ${cur}) )
+	local -a targets
+	targets=("${(@f)$(_make_phony_words)}")
+	_describe 'make target' targets
 }
+
+compdef _make_phony_complete make

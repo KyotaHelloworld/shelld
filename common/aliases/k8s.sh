@@ -5,8 +5,8 @@ function alias_kube() {
 	alias kgs='kubectl get service'
 	alias kgd='kubectl get deployment'
 	alias kdp='kubectl describe pod'
-	alias kds='kubectl describe pod'
-	alias kds='kubectl describe pod'
+	alias kds='kubectl describe service'
+	alias kdd='kubectl describe deployment'
 }
 
 alias_kube

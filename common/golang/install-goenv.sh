@@ -3,8 +3,7 @@ GOENV_SUB_COMMAND=$1
 GOENV_TARGET_GO_VERSION=$2
 
 function goenv_install() {
-    which goenv 1>/dev/null 2>&1
-    if [[ "$?" -eq "0" ]]; then
+    if command -v goenv >/dev/null 2>&1; then
         echo Already installed.
         goenv --version
         return 0
@@ -13,12 +12,9 @@ function goenv_install() {
 }
 
 function goenv_update() {
-    which goenv 1>/dev/null 2>&1
-    if [[ "$?" -ne "0" ]]; then
+    if ! command -v goenv >/dev/null 2>&1; then
         echo "AT THE FIRST, INSTALL GOENV." >&2
-        echo "you can use next command"
-        echo "    goenv install 1.19.3"
-        echo "    goenv global 1.19.3"
+        echo "run: goenv_install"
         return 2
     fi
     git -C ~/.goenv pull 1>/dev/null 2>&1

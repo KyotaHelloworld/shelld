@@ -1,48 +1,50 @@
+#!/bin/bash
+
 function install_zshrc() {
 	local this_dir=$(
-		cd $(dirname ${BASH_SOURCE:-$0})
+		cd "$(dirname "${BASH_SOURCE[0]}")"
 		pwd
 	)
-	cp $this_dir/default_rc/.zshrc ~/.zshrc
+	cp "$this_dir/default_rc/.zshrc" "$HOME/.zshrc"
 
 	# $(dirname ${this_dir}) returns root dir path
-	echo "this_shelld_path=$(dirname ${this_dir})/init.sh" >>~/.zshrc
-	echo "initial_load" >>~/.zshrc
-	echo "unset -f initial_load" >>~/.zshrc
+	echo "this_shelld_path=$(dirname "${this_dir}")/init.sh" >>"$HOME/.zshrc"
+	echo "initial_load" >>"$HOME/.zshrc"
+	echo "unset -f initial_load" >>"$HOME/.zshrc"
 }
 function install_bashrc() {
 	local this_dir=$(
-		cd $(dirname ${BASH_SOURCE:-$0})
+		cd "$(dirname "${BASH_SOURCE[0]}")"
 		pwd
 	)
-	cp $this_dir/default_rc/.bashrc ~/.bashrc
+	cp "$this_dir/default_rc/.bashrc" "$HOME/.bashrc"
 
 	# $(dirname ${this_dir}) returns root dir path
-	echo "this_shelld_path=$(dirname ${this_dir})/init.sh" >>~/.bashrc
-	echo "initial_load" >>~/.bashrc
-	echo "unset -f initial_load" >>~/.bashrc
+	echo "this_shelld_path=$(dirname "${this_dir}")/init.sh" >>"$HOME/.bashrc"
+	echo "initial_load" >>"$HOME/.bashrc"
+	echo "unset -f initial_load" >>"$HOME/.bashrc"
 }
 
 function backup_zshrc() {
 	local this_dir=$(
-		cd $(dirname ${BASH_SOURCE:-$0})
+		cd "$(dirname "${BASH_SOURCE[0]}")"
 		pwd
 	)
-	if [ -e "~/.zshrc" ]; then
-		mkdir -p $this_dir/backup
-		mv ~/.zshrc $this_dir/backup/$(backup_timestamp).zshrc
+	if [ -e "$HOME/.zshrc" ]; then
+		mkdir -p "$this_dir/backup"
+		mv "$HOME/.zshrc" "$this_dir/backup/$(backup_timestamp).zshrc"
 	else
 		echo "no zshrc file. so skip backup process"
 	fi
 }
 function backup_bashrc() {
 	local this_dir=$(
-		cd $(dirname ${BASH_SOURCE:-$0})
+		cd "$(dirname "${BASH_SOURCE[0]}")"
 		pwd
 	)
-	if [ -e "~/.bashrc" ]; then
-		mkdir -p $this_dir/backup
-		mv ~/.bashrc $this_dir/backup/$(backup_timestamp).bashrc
+	if [ -e "$HOME/.bashrc" ]; then
+		mkdir -p "$this_dir/backup"
+		mv "$HOME/.bashrc" "$this_dir/backup/$(backup_timestamp).bashrc"
 	else
 		echo "no backrc file. so skip backup process"
 	fi
@@ -56,11 +58,10 @@ function backup_timestamp() {
 # arg
 # 	1. give "zsh" or "bash" which you use
 function install_shelld() {
-	local this_dir=$(dirname $(type ${BASH_SOURCE:-$0} | awk '{print $NF}'))
 	local target_shell=$1
 	if [ "$target_shell" != "zsh" ] && [ "$target_shell" != "bash" ]; then
 		echo "Error: Target shell must be 'zsh' or 'bash'" >&2
-		return -1
+		return 1
 	fi
 
 	if [ "$target_shell" = "zsh" ]; then

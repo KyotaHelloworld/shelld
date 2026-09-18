@@ -1,13 +1,18 @@
 #!/bin/bash
 function golang_init() {
-    local this_dir=$(dirname $(type ${BASH_SOURCE:-$0} | awk '{print $NF}'))
+    if [ -n "$BASH_VERSION" ]; then
+        local this_source="${BASH_SOURCE[0]}"
+    else
+        local this_source="${(%):-%x}"
+    fi
+    local this_dir
+    this_dir=$(dirname "$this_source")
     if [[ -n $__SHELL_SETTING_GOLANG ]]; then
-        echo "Attempting to read golang setting again"
         return 0
     fi
-    export __SHELL_SETTING_GOLANG="failed"
+    __SHELL_SETTING_GOLANG="loading"
     load_dir_files "$this_dir"
-    export __SHELL_SETTING_GOLANG="succeed"
+    __SHELL_SETTING_GOLANG="loaded"
 }
 
 golang_init
