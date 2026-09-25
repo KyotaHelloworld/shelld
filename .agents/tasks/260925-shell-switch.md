@@ -6,4 +6,5 @@
 - Current state: Implementation and audit validation complete in the task worktree.
 - Validation: Mocked switch/install, isolated shell startup, spaced paths, Git prompt states, fresh interactive Zsh PTY, Make completion, syntax, and diff check passed.
 - Commits: `29ae578` for switching, `fe2969c` for startup simplification, `cf3ca37` for the audit record, and `1a4a0fa` for the interactive prompt correction. This record update is the final documentation commit.
-- Next: Await acceptance before local `master` merge.
+- Acceptance: On 2026-09-25 kyota approved the verified change and requested a local `master` merge and push to `origin`. Remote `master` matched local `master` at `868694c` before integration.
+- Integration record: The merge commit and pushed remote tip are tracked in Git history.
