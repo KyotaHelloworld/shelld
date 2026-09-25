@@ -32,10 +32,9 @@ rprompt-git-current-branch() {
 	print -r -- "${branch_status}[${branch_name}]"
 }
 
-github_display() {
-	setopt prompt_subst
-	RPROMPT='$(rprompt-git-current-branch)'
+shelld_git_prompt_precmd() {
+	RPROMPT=$(rprompt-git-current-branch)
 }
 
-github_display
-unset -f github_display
+autoload -Uz add-zsh-hook
+add-zsh-hook precmd shelld_git_prompt_precmd
