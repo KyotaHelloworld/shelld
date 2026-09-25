@@ -11,7 +11,7 @@ function golang_init() {
         return 0
     fi
     __SHELL_SETTING_GOLANG="loading"
-    load_dir_files "$this_dir"
+    load_dir_files "$this_dir" "install-goenv.sh"
     __SHELL_SETTING_GOLANG="loaded"
 }
 
