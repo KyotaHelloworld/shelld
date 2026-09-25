@@ -4,11 +4,7 @@ function history_setting() {
 	export HISTSIZE=10000
 	export SAVEHIST=100000
 
-	if [[ -f $HISTFILE ]]; then
-		: # OK. file is exist
-	else
-		touch $HISTFILE
-	fi
+	[[ -f $HISTFILE ]] || touch "$HISTFILE"
 
 	setopt hist_ignore_dups
 	setopt EXTENDED_HISTORY

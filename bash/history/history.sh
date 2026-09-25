@@ -5,11 +5,7 @@ function history_setting() {
 	export HISTFILESIZE=100000
 	export HISTCONTROL=ignoredups:erasedups
 
-	if [[ -f $HISTFILE ]]; then
-		: # OK. file is exist
-	else
-		touch $HISTFILE
-	fi
+	[[ -f $HISTFILE ]] || touch "$HISTFILE"
 
 	shopt -s histappend
 }
