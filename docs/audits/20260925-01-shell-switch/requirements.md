@@ -26,7 +26,7 @@
 | --- | --- | --- | --- |
 | AUD-20260925-01-C001 | Make targets and switch lifecycle for Bash and Zsh | Static trace and mocked command runs | PASS |
 | AUD-20260925-01-C002 | rc install, backup, path quoting, repeat application, failure | Temporary HOME integration runs | PASS |
-| AUD-20260925-01-C003 | Bash and Zsh init loading, aliases, completion, path handling | Static scan and isolated shell source | PASS |
+| AUD-20260925-01-C003 | Bash and Zsh init loading, aliases, completion, path handling | Static scan, isolated source, interactive prompt | PASS |
 | AUD-20260925-01-C004 | Duplicated, unreachable, or obsolete code across tracked files | Complete source review and diff check | PASS |
 | AUD-20260925-01-C005 | README accuracy and validation entry points | Command verification and link check | PASS |
 | AUD-20260925-01-C006 | Final clean pass for all preceding lanes | Reinspect final diff and rerun focused gates | PASS |
