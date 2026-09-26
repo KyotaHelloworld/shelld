@@ -24,6 +24,8 @@ make change-shell-to-zsh
 make change-shell-to-bash
 ```
 
+プロジェクトの構成・開発方法は [プロジェクト概要](docs/chatgpt-project/00_PROJECT_OVERVIEW.md) を参照。進行中の課題と検証記録は Beads で管理する（開始時は `bd prime` と `bd ready --json`）。Mac 対応は未実装で、現在の手順は Arch Linux 向け。
+
 ## 初回準備
 
 ```sh
