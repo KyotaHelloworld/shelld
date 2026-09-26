@@ -33,8 +33,8 @@ EOF
 install_rc() {
 	local target=$1
 	local script_dir repo_dir rc candidate backup_dir cleanup
-	script_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)
-	repo_dir=$(dirname -- "$script_dir")
+	script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)
+	repo_dir=$(dirname "$script_dir")
 	rc="$HOME/.${target}rc"
 	[[ -d $HOME && -w $HOME ]] || {
 		die "HOME is not a writable directory: $HOME"
@@ -42,20 +42,20 @@ install_rc() {
 	}
 
 	candidate=$(mktemp "$HOME/.${target}rc.shelld-new.XXXXXXXX") || return 1
-	printf -v cleanup 'rm -f -- %q' "$candidate"
+	printf -v cleanup 'rm -f %q' "$candidate"
 	trap "$cleanup" EXIT
 	write_rc "$candidate" "$repo_dir/init.sh"
 	if [[ -e $rc || -L $rc ]]; then
-		if cmp -s -- "$candidate" "$rc"; then
+		if cmp -s "$candidate" "$rc"; then
 			printf '%s already contains the current shelld settings.\n' "$rc"
 			return 0
 		fi
 		backup_dir=$(mktemp -d "$HOME/.shelld-backup.XXXXXXXX") || return 1
-		mv -- "$rc" "$backup_dir/${rc##*/}" || return 1
+		mv "$rc" "$backup_dir/${rc##*/}" || return 1
 	fi
-	if ! mv -- "$candidate" "$rc"; then
+	if ! mv "$candidate" "$rc"; then
 		if [[ -n ${backup_dir:-} ]]; then
-			mv -- "$backup_dir/${rc##*/}" "$rc" || true
+			mv "$backup_dir/${rc##*/}" "$rc" || true
 		fi
 		die "Could not install $rc."
 		return 1

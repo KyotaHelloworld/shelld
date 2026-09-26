@@ -5,8 +5,9 @@ help() {
 	cat <<'EOF'
 Usage: bash install/change-shell.sh <bash|zsh>
 
-Select the login shell for the current user. If the shell is missing, install it
-with paru. A new login session is needed to see the change everywhere.
+Select the login shell for the current user. On Linux, a missing shell is
+installed with paru. On macOS, only the system Zsh (/bin/zsh) is supported.
+A new login session is needed to see the change everywhere.
 EOF
 }
 
@@ -17,9 +18,18 @@ die() {
 
 installed_shell() {
 	local target=$1
-	local shell_path
+	local shell_path platform
 
-	shell_path=$(command -v "$target" || true)
+	platform=$(uname -s)
+	if [[ $platform == Darwin ]]; then
+		if [[ $target != zsh ]]; then
+			die 'Only the system Zsh is supported on macOS.'
+			return 1
+		fi
+		shell_path=/bin/zsh
+	else
+		shell_path=$(command -v "$target" || true)
+	fi
 	if [[ -z $shell_path ]]; then
 		command -v paru >/dev/null 2>&1 || {
 			die "Neither $target nor paru is available. Install $target first."
@@ -33,7 +43,11 @@ installed_shell() {
 	fi
 
 	[[ -n $shell_path && -x $shell_path ]] || {
-		die "$target is not available after installation."
+		if [[ $platform == Darwin ]]; then
+			die 'System Zsh (/bin/zsh) is unavailable.'
+		else
+			die "$target is not available after installation."
+		fi
 		return 1
 	}
 	printf '%s\n' "$shell_path"
@@ -41,6 +55,18 @@ installed_shell() {
 
 login_shell() {
 	local account
+	if [[ $(uname -s) == Darwin ]]; then
+		account=$(dscl . -read "/Users/$(id -un)" UserShell) || {
+			die 'Could not read the current login shell.'
+			return 1
+		}
+		[[ $account == 'UserShell: '* ]] || {
+			die 'Could not read the current login shell.'
+			return 1
+		}
+		printf '%s\n' "${account#UserShell: }"
+		return 0
+	fi
 	account=$(getent passwd "$(id -un)") || {
 		die 'Could not read the current login shell.'
 		return 1
