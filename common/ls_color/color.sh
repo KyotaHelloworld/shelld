@@ -103,7 +103,7 @@ function ls_colors_setting() {
 		*.css=1;96:\
 		*.scss=1;96:\
 		*.js=1;96:\
-		Makefile=35;104:\
+		*Makefile=35;104:\
 		*.log=2;37:\
 	"
 
