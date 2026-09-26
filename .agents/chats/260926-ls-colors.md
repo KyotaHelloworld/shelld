@@ -5,4 +5,5 @@
 - Branch: `codex/fix-ls-colors`.
 - Fix: Changed the bare `Makefile` key to the accepted `*Makefile` pattern.
 - Validation: Both shells sourced the full settings without stderr from `ls --color=always Makefile`; Makefile retained its intended color. Bash/Zsh syntax checks and `git diff --check` passed.
-- Next: Commit the verified change; local integration follows user acceptance.
+- Decision: kyota instructed that completed work be integrated into `master` and pushed each time.
+- Next: Merge this verified fix into `master` and push the configured remote.
