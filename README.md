@@ -35,3 +35,21 @@ make help
 `make apply-*` は `getent` と `chsh` を使用する。対象シェルがなければ paru でインストールする。必要な paru がない場合や、インストールまたは `chsh` が失敗した場合はそこで停止し、rc は変更しない。`chsh` が成功した後に rc の設置だけ失敗した場合は、表示されたエラーを解消して同じコマンドを再実行する。元の rc はバックアップに残る。
 
 リポジトリを移動すると生成済み rc の参照先は更新されない。移動先で `make apply-zsh` または `make apply-bash` を再実行する。
+
+## プロンプト
+
+Bash と Zsh は、ホスト・日時・現在地を上段、ユーザーと入力位置を下段に表示する。
+
+```text
+[baikin-castle 🏰] 09/23 16:38 ~/workspace/codex/universe
+baikimman 👾 ❯
+```
+
+| ホスト | 表示 | ユーザー | 表示 |
+| --- | --- | --- | --- |
+| `baikin-castle` | 🏰 | `root` | 👑 |
+| `baikin-ufo` | 🛸 | `baikimman` | 👾 |
+| `dadandan` | 🤖 | `dokinchan` | 😈 |
+| `bakery` | 🥐 | `kabilunlun` | 🦠 |
+
+表にないユーザーは `🐛` を表示し、表にないホストには絵文字を付けない。既存の色分けも適用される。
