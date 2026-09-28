@@ -1,2 +1,6 @@
 **/private/*
 /install/backup/
+
+# Beads workspace gate and local backup state
+/.beads.gate.lock
+/.beads/dolt-backup-state.json

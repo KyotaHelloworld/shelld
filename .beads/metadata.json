@@ -1,0 +1,7 @@
+{
+  "database": "dolt",
+  "backend": "dolt",
+  "dolt_mode": "embedded",
+  "dolt_database": "bd_20260926_beads_macos",
+  "project_id": "85ba6104-f656-4cfb-930b-b65343b89969"
+}
