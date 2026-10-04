@@ -17,12 +17,12 @@ class GoenvUpdateTests(unittest.TestCase):
         self.bin.mkdir()
         self.log = self.base / 'calls'
         self.env = {'HOME': str(self.home), 'PATH': str(self.bin), 'LANG': 'C',
-                    'MOCK_LOG': str(self.log), 'MOCK_GIT_STATUS': '0', 'MOCK_INSTALL_STATUS': '0'}
+                    'MOCK_LOG': str(self.log), 'MOCK_GIT_STATUS': '0', 'MOCK_INSTALL_STATUS': '0', 'MOCK_GLOBAL_STATUS': '0', 'MOCK_RELOAD_STATUS': '0'}
         (self.bin / 'tail').symlink_to('/usr/bin/tail')
         (self.bin / 'cat').symlink_to('/usr/bin/cat')
         self.mock('git', 'printf "git:%s:%s:%s\\n" "$1" "$2" "$3" >> "$MOCK_LOG"; exit "$MOCK_GIT_STATUS"')
-        self.mock('goenv', 'printf "goenv:%s:%s\\n" "$1" "${2:-}" >> "$MOCK_LOG"; if [[ "$1" == install && "${2:-}" != -l ]]; then exit "$MOCK_INSTALL_STATUS"; fi; printf "fixture-version\\n"')
-        self.mock('rerun', 'printf "rerun\\n" >> "$MOCK_LOG"')
+        self.mock('goenv', 'printf "goenv:%s:%s\\n" "$1" "${2:-}" >> "$MOCK_LOG"; if [[ "$1" == install && "${2:-}" != -l ]]; then exit "$MOCK_INSTALL_STATUS"; fi; if [[ "$1" == global ]]; then printf "global-fixture-output\\n" >&2; exit "$MOCK_GLOBAL_STATUS"; fi; printf "fixture-version\\n"')
+        self.mock('rerun', 'printf "rerun\\n" >> "$MOCK_LOG"; exit "$MOCK_RELOAD_STATUS"')
         self.mock('go', 'printf "go:%s\\n" "$1" >> "$MOCK_LOG"')
 
     def mock(self, name, body):
@@ -63,6 +63,40 @@ class GoenvUpdateTests(unittest.TestCase):
         result = self.run_update()
         self.assertEqual(result.returncode, 1)
         self.assertFalse(any(x.startswith(('goenv:global:', 'rerun', 'go:')) for x in self.calls()))
+
+    def test_global_failure_preserves_status_output_and_stops_reload(self):
+        self.env['MOCK_GLOBAL_STATUS'] = '23'
+        result = self.run_update()
+        self.assertEqual(result.returncode, 23, result.stderr)
+        self.assertIn('global-fixture-output', result.stderr)
+        self.assertIn('global selection failed', result.stderr)
+        self.assertEqual(self.calls()[-2:], ['goenv:install:1.2.3', 'goenv:global:1.2.3'])
+        self.assertNotIn('rerun', self.calls())
+        self.assertNotIn('go:version', self.calls())
+
+    def test_reload_failure_preserves_status_and_stops_version_display(self):
+        self.env['MOCK_RELOAD_STATUS'] = '29'
+        result = self.run_update()
+        self.assertEqual(result.returncode, 29, result.stderr)
+        self.assertIn('selected version was not rolled back', result.stderr)
+        self.assertEqual(self.calls()[-2:], ['goenv:global:1.2.3', 'rerun'])
+        self.assertNotIn('go:version', self.calls())
+
+    def test_missing_reload_is_nonzero_after_selection(self):
+        (self.bin / 'rerun').unlink()
+        result = self.run_update()
+        self.assertEqual(result.returncode, 127, result.stderr)
+        self.assertIn('Open a new shell', result.stderr)
+        self.assertEqual(self.calls()[-1], 'goenv:global:1.2.3')
+        self.assertNotIn('go:version', self.calls())
+
+    def test_global_failure_then_explicit_retry_preserves_success_sequence(self):
+        self.env['MOCK_GLOBAL_STATUS'] = '23'
+        self.assertEqual(self.run_update().returncode, 23)
+        self.log.unlink()
+        self.env['MOCK_GLOBAL_STATUS'] = '0'
+        self.assertEqual(self.run_update().returncode, 0)
+        self.assertEqual(self.calls()[-4:], ['goenv:install:1.2.3', 'goenv:global:1.2.3', 'rerun', 'go:version'])
 
     def test_failed_update_then_retry_without_version(self):
         self.env['MOCK_GIT_STATUS'] = '17'
