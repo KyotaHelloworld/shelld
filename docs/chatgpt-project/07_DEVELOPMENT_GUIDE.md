@@ -28,6 +28,12 @@ bash install/change-shell.sh --help
 git diff --check
 ```
 
+導入・復旧と goenv 初期化の回帰確認は Python 3、Bash、Zsh がある環境で実行する。実 HOME、アカウント、package manager は操作せず、一時 HOME とコマンドの mock を使う。
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s test -p test_shell_recovery.py -v
+```
+
 実行挙動を変更した時は [既存監査](../audits/20260925-01-shell-switch/report.md) の方法を参考に、変更経路へ絞って確認する。シェル切替はコマンドをモックし、rc・起動・履歴は一時 HOME に隔離する。デモ群を一括実行して回帰テストの代わりにしない。
 
 > [!CAUTION]

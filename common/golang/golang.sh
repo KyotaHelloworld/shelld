@@ -1,5 +1,6 @@
 #!/bin/bash
 function golang_env_var() {
+	local init_code
 	export GOPATH="${GOPATH:-$HOME/go}"
 
 	case ":$PATH:" in
@@ -15,7 +16,11 @@ function golang_env_var() {
 		esac
 	fi
 	if command -v goenv >/dev/null 2>&1; then
-		eval "$(goenv init -)"
+		if init_code=$(goenv init -); then
+			eval "$init_code"
+		else
+			printf 'goenv init failed; its output was not applied. Repair goenv and open a new shell.\n' >&2
+		fi
 	fi
 }
 
