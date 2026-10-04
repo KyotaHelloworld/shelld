@@ -53,6 +53,24 @@ bash --noprofile --norc
 zsh -f
 ```
 
+## goenv の手動更新
+
+通常のシェル起動は goenv installer を実行しない。既に `goenv` が `PATH` にあり、checkout が `~/.goenv` にある場合、repository root から手動で更新できる。
+
+> [!IMPORTANT]
+> 更新は network と `~/.goenv` の変更を伴う。自動実行や shell 設定の適用には含まれない。
+
+```sh
+bash common/golang/install-goenv.sh --help
+bash common/golang/install-goenv.sh update
+```
+
+成功時は goenv の version と利用可能な Go version の案内を表示する。version 引数なしでは Go の install・global 切替・shell restart は行わない。
+
+`git pull` が失敗したら、その status とエラーを返して後続の version 処理を止める。Go version は変更しないが、失敗した Git 操作は fetch 済みなどの途中状態を残し得る。Git の原因を解消してから同じ command を再実行する。`goenv` が見つからない場合も停止する。
+
+既存の version 引数付き経路は `rerun` を呼ぶため、実環境での shell restart は未確認。今回の手順は version 引数なしの更新を対象とする。
+
 ## プロンプト
 
 Bash と Zsh は、ホスト・日時・現在地を上段、ユーザーと入力位置を下段に表示する。

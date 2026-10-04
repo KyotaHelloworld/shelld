@@ -1,6 +1,21 @@
 #!/bin/bash
-GOENV_SUB_COMMAND=$1
-GOENV_TARGET_GO_VERSION=$2
+# This legacy helper can also be sourced; do not change the caller's shell options.
+function help() {
+    cat <<'EOF'
+Purpose: Install or update the standalone goenv checkout, then optionally select Go.
+Inputs: install or update; optional Go version uses the existing version-selection helper.
+Changes: Network access and ~/.goenv; a supplied version can install Go and change goenv global.
+Example: bash common/golang/install-goenv.sh update
+Usage: install-goenv.sh {install|update} [Go-version]
+Options: -h, --help shows this help without changing anything.
+Prerequisites: Bash, git; update also needs goenv on PATH and ~/.goenv.
+Exit behavior: Update failure stops before Go version changes and preserves git's nonzero status.
+The legacy version-selection path also calls rerun; its real shell restart is not verified.
+EOF
+}
+
+GOENV_SUB_COMMAND="${1:-}"
+GOENV_TARGET_GO_VERSION="${2:-}"
 
 function goenv_install() {
     if command -v goenv >/dev/null 2>&1; then
@@ -17,11 +32,14 @@ function goenv_update() {
         echo "run: goenv_install"
         return 2
     fi
-    git -C ~/.goenv pull 1>/dev/null 2>&1
-    if [[ $? -eq "0" ]]; then
+    if git -C "$HOME/.goenv" pull; then
         echo "update successfully finished."
         goenv -v
         return 0
+    else
+        local result=$?
+        printf 'goenv update failed; Go version was not changed. Resolve the git error and retry.\n' >&2
+        return "$result"
     fi
 }
 
@@ -50,15 +68,21 @@ function set_go_version() {
     go version
 }
 
-if [[ $GOENV_SUB_COMMAND = "install" ]]; then
-    goenv_install &&
-        set_go_version $GOENV_TARGET_GO_VERSION
-fi
+function main() {
+    local result=0
+    if [[ "${1:-}" == -h || "${1:-}" == --help ]]; then
+        help
+    elif [[ $GOENV_SUB_COMMAND = "install" ]]; then
+        goenv_install && set_go_version "$GOENV_TARGET_GO_VERSION"
+        result=$?
+    elif [[ $GOENV_SUB_COMMAND = "update" ]]; then
+        goenv_update && set_go_version "$GOENV_TARGET_GO_VERSION"
+        result=$?
+    fi
+    # Cleanup must not turn a failed operation into a successful script exit.
+    unset GOENV_SUB_COMMAND
+    unset GOENV_TARGET_GO_VERSION
+    return "$result"
+}
 
-if [[ $GOENV_SUB_COMMAND = "update" ]]; then
-    goenv_update &&
-        set_go_version $GOENV_TARGET_GO_VERSION
-fi
-
-unset GOENV_SUB_COMMAND
-unset GOENV_TARGET_GO_VERSION
+main "$@"
