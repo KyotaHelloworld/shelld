@@ -89,5 +89,15 @@ class GoenvUpdateTests(unittest.TestCase):
         self.assertIn('caller-alive status=17', result.stdout)
         self.assertEqual(self.calls(), [f'git:-C:{self.home}/.goenv:pull'])
 
+    def test_source_keeps_existing_caller_main_and_help(self):
+        self.env['MOCK_GIT_STATUS'] = '17'
+        result = subprocess.run(['/usr/bin/bash', '--noprofile', '--norc', '-c',
+                                 'main() { printf "caller-main\\n"; }; help() { printf "caller-help\\n"; }; '
+                                 'source "$1" update; result=$?; help; main; printf "status=%s\\n" "$result"',
+                                 'fixture', str(ROOT / 'common/golang/install-goenv.sh')],
+                                env=self.env, text=True, capture_output=True, timeout=5)
+        self.assertEqual(result.returncode, 0)
+        self.assertEqual(result.stdout, 'caller-help\ncaller-main\nstatus=17\n')
+
 if __name__ == '__main__':
     unittest.main()

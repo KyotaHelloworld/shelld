@@ -1,6 +1,6 @@
 #!/bin/bash
 # This legacy helper can also be sourced; do not change the caller's shell options.
-function help() {
+function shelld_goenv_help() {
     cat <<'EOF'
 Purpose: Install or update the standalone goenv checkout, then optionally select Go.
 Inputs: install or update; optional Go version uses the existing version-selection helper.
@@ -68,10 +68,10 @@ function set_go_version() {
     go version
 }
 
-function main() {
+function shelld_goenv_main() {
     local result=0
     if [[ "${1:-}" == -h || "${1:-}" == --help ]]; then
-        help
+        shelld_goenv_help
     elif [[ $GOENV_SUB_COMMAND = "install" ]]; then
         goenv_install && set_go_version "$GOENV_TARGET_GO_VERSION"
         result=$?
@@ -85,4 +85,4 @@ function main() {
     return "$result"
 }
 
-main "$@"
+shelld_goenv_main "$@"
