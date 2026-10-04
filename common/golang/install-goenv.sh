@@ -9,7 +9,7 @@ Example: bash common/golang/install-goenv.sh update
 Usage: install-goenv.sh {install|update} [Go-version]
 Options: -h, --help shows this help without changing anything.
 Prerequisites: Bash, git; update also needs goenv on PATH and ~/.goenv.
-Exit behavior: Update failure stops before Go version changes and preserves git's nonzero status.
+Exit behavior: Update failure stops before Go version changes; selection/reload failures also stop and preserve status.
 The legacy version-selection path also calls rerun; its real shell restart is not verified.
 EOF
 }
@@ -63,8 +63,21 @@ function set_go_version() {
         return 1
     fi
 
-    goenv global $GOENV_TARGET_GO_VERSION 1>/dev/null 2>&1
-    echo "restarting shell" && rerun
+    if goenv global "$GOENV_TARGET_GO_VERSION"; then
+        :
+    else
+        local result=$?
+        printf 'Go was installed, but global selection failed. Resolve the goenv error and retry selection.\n' >&2
+        return "$result"
+    fi
+    echo "restarting shell"
+    if rerun; then
+        :
+    else
+        local result=$?
+        printf 'Go global selection succeeded, but shell reload failed. Open a new shell; the selected version was not rolled back.\n' >&2
+        return "$result"
+    fi
     go version
 }
 

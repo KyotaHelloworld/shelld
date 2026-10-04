@@ -73,6 +73,10 @@ bash common/golang/install-goenv.sh update
 
 既存の version 引数付き経路は `rerun` を呼ぶため、実環境での shell restart は未確認。今回の手順は version 引数なしの更新を対象とする。
 
+version 引数付き経路では、Go の install 後に global 選択、shell reload、version 表示の順に進む。global 選択が失敗したら、そのエラーと status を返し、reload へ進まない。Go の install は取り消さないため、goenv の原因を解消して選択を再試行する。
+
+`rerun` がない場合や reload が失敗した場合も非ゼロで停止する。この段階では global 選択済みなので、新しいシェルを開いて確認する。選択は自動では元に戻らない。
+
 ## プロンプト
 
 Bash と Zsh は、ホスト・日時・現在地を上段、ユーザーと入力位置を下段に表示する。
