@@ -1,7 +1,6 @@
 #!/bin/bash
 function alias_paru() {
-	# Install, remove, and search packages with paru.
-	alias install='paru -S'
+	# Remove and search packages with paru.
 	alias uninstall='paru -Rns'
 	alias search='paru -Ss'
 }

@@ -24,6 +24,8 @@ make change-shell-to-zsh
 make change-shell-to-bash
 ```
 
+`install` は標準コマンドのまま使える。パッケージの導入には `paru -S <package>` を使う。以前の設定を読み込んだ端末に `install='paru -S'` が残っている場合は、新しいシェルを開くか `unalias install` で解除する。
+
 プロジェクトの構成・開発方法は [プロジェクト概要](docs/chatgpt-project/00_PROJECT_OVERVIEW.md) を参照。進行中の課題と検証記録は Beads で管理する（開始時は `bd prime` と `bd ready --json`）。Mac 対応は未実装で、現在の手順は Arch Linux 向け。
 
 ## 初回準備
