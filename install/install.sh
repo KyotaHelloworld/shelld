@@ -52,16 +52,17 @@ install_rc() {
 		fi
 		backup_dir=$(mktemp -d "$HOME/.shelld-backup.XXXXXXXX") || return 1
 		mv -- "$rc" "$backup_dir/${rc##*/}" || return 1
+		printf 'Previous rc saved at %s\n' "$backup_dir/${rc##*/}"
 	fi
 	if ! mv -- "$candidate" "$rc"; then
 		if [[ -n ${backup_dir:-} ]]; then
-			mv -- "$backup_dir/${rc##*/}" "$rc" || true
+			if ! mv -- "$backup_dir/${rc##*/}" "$rc"; then
+				printf 'Error: Could not restore %s. Previous rc remains at %s; restore it after fixing the filesystem error.\n' \
+					"$rc" "$backup_dir/${rc##*/}" >&2
+			fi
 		fi
 		die "Could not install $rc."
 		return 1
-	fi
-	if [[ -n ${backup_dir:-} ]]; then
-		printf 'Previous rc saved at %s\n' "$backup_dir/${rc##*/}"
 	fi
 	printf 'Installed %s. Open a new %s session to load it.\n' "$rc" "$target"
 }

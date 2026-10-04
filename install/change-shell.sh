@@ -25,7 +25,7 @@ installed_shell() {
 			die "Neither $target nor paru is available. Install $target first."
 			return 1
 		}
-		paru -S --needed "$target" || {
+		paru -S --needed "$target" >&2 || {
 			die "paru could not install $target."
 			return 1
 		}
