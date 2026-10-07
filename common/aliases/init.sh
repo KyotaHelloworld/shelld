@@ -8,7 +8,11 @@ function alias_init() {
 	local this_dir
 	this_dir=$(dirname "$this_source")
 
-	load_dir_files "$this_dir"
+	if [[ $(uname -s) == Darwin ]]; then
+		load_dir_files "$this_dir" paru.sh systemctl.sh
+	else
+		load_dir_files "$this_dir"
+	fi
 }
 
 alias_init
