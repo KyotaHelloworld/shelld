@@ -21,7 +21,7 @@ class RecoveryTests(unittest.TestCase):
                     'LANG': 'C', 'MOCK_BIN': str(self.bin),
                     'MOCK_STATE': str(self.base / 'account')}
         Path(self.env['MOCK_STATE']).write_text('/usr/bin/bash\n')
-        for name in ('dirname', 'cat', 'ln', 'mktemp', 'cmp', 'rm'):
+        for name in ('dirname', 'cat', 'ln', 'mktemp', 'cmp', 'rm', 'uname'):
             (self.bin / name).symlink_to('/usr/bin/' + name)
 
     def mock(self, name, body):
@@ -71,7 +71,7 @@ class RecoveryTests(unittest.TestCase):
             with self.subTest(target=target):
                 rc = self.home / ('.' + target + 'rc')
                 rc.write_bytes(b'original rc\n')
-                self.mock('mv', 'case "$2" in *.shelld-new.*|*/.shelld-backup.*/*) exit 19;; esac\nexec /usr/bin/mv "$@"')
+                self.mock('mv', '[[ $1 == -- ]] && shift\ncase "$1" in *.shelld-new.*|*/.shelld-backup.*/*) exit 19;; esac\nexec /usr/bin/mv "$@"')
                 result = self.run_script('install/install.sh', target)
                 self.assertNotEqual(result.returncode, 0)
                 backups = list(self.home.glob('.shelld-backup.*/.' + target + 'rc'))
@@ -85,7 +85,7 @@ class RecoveryTests(unittest.TestCase):
     def test_failed_install_restores_rc_and_retry_is_idempotent(self):
         rc = self.home / '.bashrc'
         rc.write_bytes(b'original rc\n')
-        self.mock('mv', 'case "$2" in *.shelld-new.*) exit 19;; esac\nexec /usr/bin/mv "$@"')
+        self.mock('mv', '[[ $1 == -- ]] && shift\ncase "$1" in *.shelld-new.*) exit 19;; esac\nexec /usr/bin/mv "$@"')
         self.assertNotEqual(self.run_script('install/install.sh', 'bash').returncode, 0)
         self.assertEqual(rc.read_bytes(), b'original rc\n')
         self.mock('mv', 'exec /usr/bin/mv "$@"')

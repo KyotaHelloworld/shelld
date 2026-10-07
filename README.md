@@ -1,6 +1,7 @@
 # shelld
 
-Bash と Zsh のシェル設定。Arch Linux 環境で、未インストールのシェルは paru で導入する。
+Bash と Zsh のシェル設定。Linux では未インストールのシェルを paru で導入する。
+macOS は標準 Zsh (`/bin/zsh`) のみを対象とし、追加のパッケージマネージャーは使用しない。
 
 ## 使い方
 
@@ -26,7 +27,15 @@ make change-shell-to-bash
 
 `install` は標準コマンドのまま使える。パッケージの導入には `paru -S <package>` を使う。以前の設定を読み込んだ端末に `install='paru -S'` が残っている場合は、新しいシェルを開くか `unalias install` で解除する。
 
-プロジェクトの構成・開発方法は [プロジェクト概要](docs/chatgpt-project/00_PROJECT_OVERVIEW.md) を参照。進行中の課題と検証記録は Beads で管理する（開始時は `bd prime` と `bd ready --json`）。Mac 対応は未実装で、現在の手順は Arch Linux 向け。
+プロジェクトの構成・開発方法は [プロジェクト概要](docs/chatgpt-project/00_PROJECT_OVERVIEW.md) を参照。進行中の課題と検証記録は Beads で管理する（開始時は `bd prime` と `bd ready --json`）。macOS の標準 Zsh 対応を含みますが、Mac 実機での確認は未完了です。
+
+macOS では標準 Bash から実行できます。
+
+```sh
+bash install/change-shell.sh zsh && bash install/install.sh zsh
+```
+
+macOS は `dscl` でログインシェルを確認し、標準 `/bin/zsh` を使います。Linux 専用の paru、systemctl、fcitx、LS_COLORS と scan は読み込みません。`ls` は標準の `-G` で色表示します。
 
 ## 初回準備
 

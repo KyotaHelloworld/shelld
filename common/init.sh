@@ -9,7 +9,11 @@ function common_init() {
     this_dir=$(dirname "$this_source")
 
     source "$this_dir/load_functions.sh"
-    load_dirs_init "$this_dir"
+    if [[ $(uname -s) == Darwin ]]; then
+        load_dirs_init "$this_dir" input_method ls_color
+    else
+        load_dirs_init "$this_dir"
+    fi
 }
 
 common_init
